@@ -1,18 +1,31 @@
-import video from "../data/video.js";
+import videoData from "../data/video.js";
+import React, { useState } from "react";
+import Video from "./Video.js"
+import InfoSection from "./InfoSection.js";
+import LikeButton from "./LikeButton.js";
+import CommentsContainer from "./CommentsContainer";
 
 function App() {
-  console.log("Here's your data:", video);
+
+  const [showComments, setShowComments] = useState(true)
+
+  function removeComments() {
+    setShowComments(!showComments)
+  }
 
   return (
     <div className="App">
-      <iframe
-        width="919"
-        height="525"
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-        frameBorder="0"
-        allowFullScreen
-        title="Thinking in React"
-      />
+      <Video url={videoData.embedUrl} title={videoData.title} />
+
+      <InfoSection header={videoData.title} views={videoData.views} date={videoData.createdAt} />
+
+      <LikeButton upvotes={videoData.upvotes} downvotes={videoData.downvotes} />
+
+      <button onClick={removeComments}>{showComments ? "Hide" : "Show"} Comments</button>
+      <hr></hr>
+      {/* && = 'if-then' in this context */}
+      { showComments && <CommentsContainer comments={videoData.comments} /> }
+
     </div>
   );
 }
